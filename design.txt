@@ -1,0 +1,72 @@
+Design Document: Command Line To-Do List Application
+Purpose
+The purpose of this application is to provide users with a command line interface to manage their to-do list. Users can add tasks, view the list, remove tasks, complete tasks, prioritize tasks, save and load the to-do list, clear the list, and get help on available commands.
+
+Features
+1. Add a task to the to-do list with an optional priority and due date.
+2. View the current to-do list.
+3. Remove a task from the to-do list.
+4. Mark a task as completed.
+5. Prioritize a task within the list.
+6. Save the current to-do list to a file.
+7. Load a to-do list from a file.
+8. Clear the entire to-do list.
+9. Display help text for available commands.
+
+Technologies and Libraries
+Programming Language: Go
+Testing Framework: Go testing package
+Data Serialization: Go JSON package
+
+High-Level Architecture
+The application will follow a modular design, consisting of the following components:
+
+main.go: The main entry point of the application. It will handle user input and invoke the corresponding functions from the other modules based on the provided command.
+todo_list.go: Responsible for managing the to-do list data and performing operations such as adding, removing, clearing tasks, marking tasks as complete, prioritizing tasks, saving, and loading tasks.
+todo_test.go: Unit tests for the todo_list module using the Go testing framework.
+file_utils.go: Module for file operations including loading and saving a to-do list.
+file_utils_test.go: Unit tests for the file_utils module.
+
+Detailed Design
+main.go
+This module will handle the user input and invoke the appropriate functions from the other modules.
+
+parseCommand(command string) (string, []string): Parses the user command and returns the command name and its arguments as a tuple.
+runCommand(command string, arguments []string) string: Executes the command based on the provided command name and arguments. It will call the corresponding function from the todo_list module and return the output message.
+main(): The main function that continuously prompts the user for commands, calls the parseCommand and runCommand functions, and displays the output message.
+todo_list.go
+This module will manage the to-do list data and perform operations on it.
+
+type TodoList struct{}
+type Task struct{}
+func NewTodoList() *TodoList: Initializes an empty to-do list and returns a pointer to the TodoList struct.
+func NewTask(description string, dueDate time.Time, priority int) *Task: Initializes a task with the given parameters.
+func (t *TodoList) AddTask(task *Task) int: Adds a task to the to-do list and returns the assigned task number.
+func (t *TodoList) RemoveTask(taskNumber int) bool: Removes a task from the to-do list based on the provided task number. Returns true if successful, false otherwise.
+func (t *TodoList) CompleteTask(taskNumber int) bool: Marks a task as complete based on the task number. Returns true if successful, false otherwise.
+func (t *TodoList) PrioritizeTask(taskNumber int, priority int): Changes the priority of a task.
+func (t *TodoList) SaveTasks(filePath string): Saves the to-do list to a file.
+func (t *TodoList) LoadTasks(filePath string): Loads the to-do list from a file.
+func (t *TodoList) ClearTasks(): Clears the entire to-do list.
+func (t *TodoList) GetTaskList() []Task: Returns the current to-do list as a slice of tasks.
+func (t *TodoList) GetTaskCount() int: Returns the count of tasks in the to-do list.
+
+file_utils.go
+This module will
+
+ manage file-related operations.
+
+func ReadFromFile(filePath string) ([]byte, error): Reads data from the specified file and returns it as a byte slice.
+func WriteToFile(filePath string, data []byte) error: Writes the provided data to the specified file.
+
+Test-Driven Development (TDD) Approach
+The TDD process involves writing tests first, then developing features to pass those tests. This ensures that all features are covered by tests, and promotes clear, maintainable code.
+
+Write tests for the Task and TodoList struct functions in todo_test.go that cover different scenarios, including adding tasks, removing tasks, marking tasks as complete, changing task priority, saving, and loading the to-do list.
+Run the tests and ensure that they fail (since the implementation is not yet completed).
+Implement the Task and TodoList structs in todo_list.go to pass the tests.
+Write tests for the parseCommand and runCommand functions in todo_test.go to cover different command scenarios.
+Run the tests and ensure that they fail (since the implementation is not yet completed).
+Write tests for the ReadFromFile and WriteToFile functions in file_utils_test.go to cover different scenarios.
+Run the tests and ensure that they fail (since the implementation is not yet completed).
+Implement the ReadFromFile and WriteToFile functions in file_utils.go to pass the tests.
