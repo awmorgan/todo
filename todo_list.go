@@ -82,6 +82,43 @@ func (t *TodoList) SaveTasks(filename string) error {
 	return os.WriteFile(filename, bytes, 0644)
 }
 
-// todo: Continue this process, writing tests and then the corresponding methods
-// for LoadTasks,
-// ClearTasks, GetTaskList, and GetTaskCount.
+func (t *TodoList) LoadTasks(filename string) error {
+	// Open the file
+	f, err := os.Open(filename)
+	// Check for error
+	if err != nil {
+		return err
+	}
+	// defer file closing
+	defer f.Close()
+
+	// Create a slice to hold tasks
+	var tasks []*Task
+	// Decode the JSON from the file into tasks
+	err = json.NewDecoder(f).Decode(&tasks)
+	// Check for error
+	if err != nil {
+		return err
+	}
+
+	// Set t.Tasks to tasks
+	t.Tasks = tasks
+
+	// Return nil error
+	return nil
+}
+
+func (t *TodoList) ClearTasks() {
+	// Set t.Tasks to an empty slice
+	t.Tasks = []*Task{}
+}
+
+func (t *TodoList) GetTaskList() []*Task {
+	// Simply return t.Tasks
+	return t.Tasks
+}
+
+func (t *TodoList) GetTaskCount() int {
+	// Return the length of t.Tasks
+	return len(t.Tasks)
+}
