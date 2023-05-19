@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"os"
 	"testing"
 	"time"
 )
@@ -179,7 +179,7 @@ func TestSaveTasks(t *testing.T) {
 	}
 
 	// Load the file and check its contents
-	bytes, err := ioutil.ReadFile("/tmp/todoList.json")
+	bytes, err := os.ReadFile("/tmp/todoList.json")
 	if err != nil {
 		t.Errorf("Expected to read file without error, got: %v", err)
 	}
